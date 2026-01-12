@@ -194,4 +194,4 @@ function softSleep(target: Group, done: () => void) {
   requestAnimationFrame(tick);
 }
 
-useGLTF.preload("/models/monster.gltf");
+useGLTF.preload(`${import.meta.env.BASE_URL}models/monster.gltf`);

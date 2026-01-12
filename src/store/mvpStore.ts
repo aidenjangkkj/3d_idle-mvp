@@ -51,7 +51,10 @@ const INITIAL_ITEMS: Record<ItemKey, number> = {
 };
 
 const NEED_DELTAS: Partial<
-  Record<SelectedAction, { hunger?: number; fatigue?: number; boredom?: number }>
+  Record<
+    SelectedAction,
+    { hunger?: number; fatigue?: number; boredom?: number }
+  >
 > = {
   feed: { hunger: -30, fatigue: 5, boredom: 5 },
   play: { hunger: 15, fatigue: 20, boredom: -30 },
@@ -110,7 +113,7 @@ function applyBondDelta(intimacy: number, level: number, delta: number) {
 }
 
 export const useMvpStore = create<MvpState>((set, get) => ({
-  modelUrl: "/models/monster.gltf",
+  modelUrl: `${import.meta.env.BASE_URL}models/monster.gltf`,
   quality: "high",
   desiredFps: 30,
   hunger: 60,
@@ -206,7 +209,8 @@ export const useMvpStore = create<MvpState>((set, get) => ({
     try {
       const parsed = JSON.parse(raw) as Partial<Persisted>;
       set({
-        modelUrl: parsed.modelUrl ?? "/models/monster.gltf",
+        modelUrl:
+          parsed.modelUrl ?? `${import.meta.env.BASE_URL}models/monster.gltf`,
         quality: parsed.quality ?? "high",
         desiredFps: parsed.desiredFps ?? 30,
         selectedAction: parsed.selectedAction ?? "idle",
