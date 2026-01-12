@@ -1,0 +1,76 @@
+/* src/app/app.css */
+:root {
+  --bg: #f6f7f9;
+  --card: rgba(255, 255, 255, 0.96);
+  --stroke: rgba(15, 23, 42, 0.08);
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --shadow-soft: 0 6px 16px rgba(0, 0, 0, 0.06);
+  --radius: 18px;
+  --pad: 16px;
+}
+
+* {
+  box-sizing: border-box;
+}
+html,
+body,
+#root {
+  height: 100%;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+}
+
+.app {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: auto 44vh 1fr auto;
+  gap: 12px;
+  padding: calc(var(--pad) + env(safe-area-inset-top)) var(--pad)
+    calc(var(--pad) + env(safe-area-inset-bottom)) var(--pad);
+  overflow: hidden;
+}
+
+/* 상단 */
+.top {
+  display: flex;
+}
+
+/* ✅ 중앙 히어로(3D 영역) */
+.hero {
+  width: 100%;
+  border-radius: var(--radius);
+  background: radial-gradient(
+    900px 500px at 50% 30%,
+    rgba(255, 255, 255, 0.85),
+    rgba(246, 247, 249, 1)
+  );
+  border: 1px solid var(--stroke);
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+  position: relative;
+}
+
+/* 3D Canvas가 부모를 꽉 채우게 */
+.hero canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+/* 카드 영역(스크롤) */
+.content {
+  display: grid;
+  gap: 12px;
+  overflow: auto;
+}
+
+/* 하단 고정 */
+.bottom {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  padding-bottom: env(safe-area-inset-bottom);
+}
