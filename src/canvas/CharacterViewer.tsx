@@ -128,7 +128,7 @@ export function CharacterViewer() {
   }, [actionTrigger, selectedAction, playOnce, fallbackMotion]);
 
   // 모델 터치 = play 트리거
-
+  const deg = (d: number) => (d * Math.PI) / 180;
   return (
     <>
       <group ref={groupRef} onClick={onClick} scale={1} position={[0, -0.9, 0]}>
@@ -143,8 +143,8 @@ export function CharacterViewer() {
         zoomSpeed={0.8}
         minDistance={2.2}
         maxDistance={3.2}
-        minPolarAngle={Math.PI / 2} // 최소 (45°)
-        maxPolarAngle={Math.PI / 2} // 최대 (90°)
+        minPolarAngle={deg(60)} // 60°
+        maxPolarAngle={deg(90)} // 90°
         target={new Vector3(0, 0.2, 0)}
       />
     </>
