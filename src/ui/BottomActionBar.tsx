@@ -9,7 +9,7 @@ export function BottomActionBar({ onAction }: Props) {
   const items = useMvpStore((s) => s.items);
 
   return (
-    <div className="tossCard" style={{ padding: 10 }}>
+    <div className="tossCard" style={{ padding: 10, marginBottom: "1rem" }}>
       <div
         style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}
       >
@@ -59,9 +59,7 @@ function ActionButton({
         padding: "12px 10px",
         borderRadius: 14,
         border: "1px solid rgba(15,23,42,0.10)",
-        background: disabled
-          ? "rgba(15,23,42,0.08)"
-          : "rgba(255,255,255,0.95)",
+        background: disabled ? "rgba(15,23,42,0.08)" : "rgba(255,255,255,0.95)",
         fontWeight: 700,
         cursor: disabled ? "not-allowed" : "pointer",
         opacity: disabled ? 0.6 : 1,

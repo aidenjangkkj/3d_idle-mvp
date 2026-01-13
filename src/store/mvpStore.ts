@@ -4,7 +4,7 @@ import { create } from "zustand";
 type Quality = "low" | "high";
 export type SelectedAction = "idle" | "play" | "feed" | "hit" | "sleep";
 export type ItemKey = "food" | "toy" | "bed";
-type View = "home" | "shop";
+type View = "home" | "missions" | "shop";
 export type MoodTier = "good" | "ok" | "bad";
 
 type MvpState = {
@@ -19,6 +19,9 @@ type MvpState = {
   coins: number;
   items: Record<ItemKey, number>;
   view: View;
+  actionCounts: Record<SelectedAction, number>;
+  purchaseCount: number;
+  missionsClaimed: Record<string, boolean>;
 
   selectedAction: SelectedAction;
   actionTrigger: number;
@@ -29,6 +32,7 @@ type MvpState = {
   adjustBond: (a: SelectedAction) => void;
   useItemForAction: (a: SelectedAction) => boolean;
   buyItem: (item: ItemKey, quantity?: number) => boolean;
+  claimMission: (id: string, reward: number) => void;
   setView: (view: View) => void;
 
   setQuality: (q: Quality) => void;
@@ -48,6 +52,14 @@ const INITIAL_ITEMS: Record<ItemKey, number> = {
   food: 20,
   toy: 20,
   bed: 20,
+};
+
+const INITIAL_ACTION_COUNTS: Record<SelectedAction, number> = {
+  idle: 0,
+  play: 0,
+  feed: 0,
+  hit: 0,
+  sleep: 0,
 };
 
 const NEED_DELTAS: Partial<
@@ -124,6 +136,9 @@ export const useMvpStore = create<MvpState>((set, get) => ({
   coins: 1200,
   items: { ...INITIAL_ITEMS },
   view: "home",
+  actionCounts: { ...INITIAL_ACTION_COUNTS },
+  purchaseCount: 0,
+  missionsClaimed: {},
 
   selectedAction: "idle",
   actionTrigger: 0,
@@ -145,7 +160,17 @@ export const useMvpStore = create<MvpState>((set, get) => ({
 
   // ✅ 같은 액션을 연타해도 항상 실행되도록 트리거 증가
   triggerAction: (selectedAction) => {
-    set((s) => ({ selectedAction, actionTrigger: s.actionTrigger + 1 }));
+    set((s) => {
+      const nextCounts = { ...s.actionCounts };
+      if (selectedAction in nextCounts) {
+        nextCounts[selectedAction] = nextCounts[selectedAction] + 1;
+      }
+      return {
+        selectedAction,
+        actionTrigger: s.actionTrigger + 1,
+        actionCounts: nextCounts,
+      };
+    });
     // trigger는 굳이 저장할 필요 없음(선택)
     persist({ ...get(), selectedAction });
   },
@@ -189,8 +214,19 @@ export const useMvpStore = create<MvpState>((set, get) => ({
     set((s) => ({
       coins: s.coins - cost,
       items: { ...s.items, [item]: s.items[item] + quantity },
+      purchaseCount: s.purchaseCount + 1,
     }));
     return true;
+  },
+
+  claimMission: (id, reward) => {
+    set((s) => {
+      if (s.missionsClaimed[id]) return s;
+      return {
+        coins: s.coins + reward,
+        missionsClaimed: { ...s.missionsClaimed, [id]: true },
+      };
+    });
   },
 
   setView: (view) => {
@@ -222,6 +258,9 @@ export const useMvpStore = create<MvpState>((set, get) => ({
         coins: 1200,
         items: { ...INITIAL_ITEMS },
         view: "home",
+        actionCounts: { ...INITIAL_ACTION_COUNTS },
+        purchaseCount: 0,
+        missionsClaimed: {},
         // ✅ 트리거는 세션 값
         actionTrigger: 0,
       });

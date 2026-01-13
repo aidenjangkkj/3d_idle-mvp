@@ -53,6 +53,10 @@ body {
   position: relative;
 }
 
+.heroMission {
+  margin-top: -4px;
+}
+
 /* 3D Canvas가 부모를 꽉 채우게 */
 .hero canvas {
   width: 100% !important;
