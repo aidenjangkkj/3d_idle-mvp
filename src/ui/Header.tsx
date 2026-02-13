@@ -1,11 +1,17 @@
 import { useMvpStore } from "../store/mvpStore";
 
-export function Header() {
+export type HeaderTab = "home" | "missions" | "shop";
+
+export function Header({
+  activeTab,
+  onTabChange,
+}: {
+  activeTab: HeaderTab;
+  onTabChange: (tab: HeaderTab) => void;
+}) {
   const level = useMvpStore((s) => s.level);
   const intimacy = useMvpStore((s) => s.intimacy);
   const coins = useMvpStore((s) => s.coins);
-  const view = useMvpStore((s) => s.view);
-  const setView = useMvpStore((s) => s.setView);
 
   return (
     <div className="tossCard" style={{ padding: 12, width: "100%" }}>
@@ -16,21 +22,27 @@ export function Header() {
           gap: 10,
         }}
       >
-        <TabButton active={view === "home"} onClick={() => setView("home")}>
+        <TabButton
+          active={activeTab === "home"}
+          onClick={() => onTabChange("home")}
+        >
           🏠 홈
         </TabButton>
         <TabButton
-          active={view === "missions"}
-          onClick={() => setView("missions")}
+          active={activeTab === "missions"}
+          onClick={() => onTabChange("missions")}
         >
           🎯 미션
         </TabButton>
-        <TabButton active={view === "shop"} onClick={() => setView("shop")}>
+        <TabButton
+          active={activeTab === "shop"}
+          onClick={() => onTabChange("shop")}
+        >
           🛒 상점
         </TabButton>
       </div>
 
-      {view === "home" ? (
+      {activeTab === "home" ? (
         <>
           <div className="tossRow" style={{ marginTop: 12 }}>
             <div>
@@ -59,7 +71,7 @@ export function Header() {
             <div className="tossTitle">💰 {coins}</div>
           </div>
         </>
-      ) : view === "missions" ? (
+      ) : activeTab === "missions" ? (
         <div className="tossRow" style={{ marginTop: 12 }}>
           <div className="tossTitle">미션</div>
           <div className="tossTitle">💰 {coins}</div>
