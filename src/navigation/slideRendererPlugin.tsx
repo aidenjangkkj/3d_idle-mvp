@@ -1,4 +1,5 @@
 import type { StackflowReactPlugin } from "@stackflow/react/future";
+import { WebBackBridge } from "./WebBackBridge";
 
 export function slideRendererPlugin(): StackflowReactPlugin {
   return () => ({
@@ -6,6 +7,7 @@ export function slideRendererPlugin(): StackflowReactPlugin {
     render({ stack }) {
       return (
         <div className="stackflow-stage">
+          <WebBackBridge />
           {stack
             .render()
             .activities.filter(
