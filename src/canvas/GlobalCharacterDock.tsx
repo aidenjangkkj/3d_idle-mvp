@@ -42,19 +42,21 @@ export function GlobalCharacterDock() {
       }
 
       const box = anchor.getBoundingClientRect();
+      const nextTop = box.top + window.scrollY;
+      const nextLeft = box.left + window.scrollX;
       setRect((prev) => {
         if (
           prev &&
-          prev.top === box.top &&
-          prev.left === box.left &&
+          prev.top === nextTop &&
+          prev.left === nextLeft &&
           prev.width === box.width &&
           prev.height === box.height
         ) {
           return prev;
         }
         return {
-          top: box.top,
-          left: box.left,
+          top: nextTop,
+          left: nextLeft,
           width: box.width,
           height: box.height,
         };

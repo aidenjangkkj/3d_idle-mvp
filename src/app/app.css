@@ -92,11 +92,6 @@ body {
   position: relative;
 }
 
-.hero[data-character-anchor="true"] {
-  background: transparent;
-  box-shadow: none;
-}
-
 .heroMission {
   margin-top: -4px;
 }
@@ -109,7 +104,7 @@ body {
 }
 
 .global-character-dock {
-  position: fixed;
+  position: absolute;
   z-index: 50;
   border-radius: var(--radius);
   overflow: hidden;
